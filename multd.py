@@ -30,6 +30,14 @@ def MultiplicaEnterosLargosDYV (n1, n2):
 
         if len(n2) % 2 != 0:
             n2.insert(0, 0)
+            
+        if len(n2) < len(n1):
+            for x in range(len(n2), len(n1)):
+                n2.insert(0,0)
+
+        elif len(n1) < len(n2):
+            for x in range(len(n1), len(n2)):
+                n1.insert(0,0)
 
         w = []
         x = []
