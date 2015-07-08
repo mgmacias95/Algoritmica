@@ -5,6 +5,7 @@
 #include <list>
 #include <limits>
 #include <queue>
+#include <ctime>
 
 using namespace std;
 
@@ -23,7 +24,7 @@ struct Elemento {
     }
 
     friend ostream & operator<< (ostream & os, Elemento & e) {
-        os << "Beneficio = " << e.beneficio << "\tPeso = " << e.peso << endl;
+        os << "Beneficio = " << e.beneficio << "\tPeso = " << e.peso;
         return os;
     }
 };
@@ -205,23 +206,27 @@ int main(int argc, char const *argv[]) {
     unsigned pesomochi = atoi(argv[argc-1]);
     cout << "Peso de la mochila: " << pesomochi << endl;
 
+    clock_t antes, despues;
+    antes = clock();
     candidatos.sort();
-    cout << "Objetos disponibles: " << endl << candidatos;
+    // cout << "Objetos disponibles: " << endl << candidatos;
 
-    cout << "----------------------------------------" << endl;
+    // cout << "----------------------------------------" << endl;
 
     vector<bool> mochi = Mochila(candidatos, pesomochi);
+    despues = clock();
+
     list<Elemento>::iterator it = candidatos.begin();
 
     cout << "Los objetos utilizados son: " << endl;
     for (unsigned i=0; i<mochi.size(); i++) {
         if (mochi.at(i))
-            cout << "Usamos el objeto [" << (*it).beneficio << 
-                ',' << (*it).peso << ']' << endl;
+            cout << "Usamos el objeto" << (*it) << endl;
         // else
         //     cout << "NO usamos el objeto " << i+1 << endl;
         ++it;
     }
+    cout << "Tiempo: " << (despues-antes)/(double)CLOCKS_PER_SEC << endl;
 
     return 0;
 }
