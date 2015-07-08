@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -10,6 +11,10 @@ struct Elemento {
     Elemento (int b, int p) {
         beneficio = b;
         peso = p;
+    }
+    friend ostream & operator << (ostream & os, Elemento & e) {
+        os << "Peso: " << e.peso << "\tBeneficio: " << e.beneficio;
+        return os;
     }
 };
 
@@ -84,7 +89,13 @@ int main(int argc, char const *argv[]) {
 
     unsigned pesomochi = atoi(argv[argc-1]);
 
+    clock_t antes, despues;
+    antes = clock();
     vector<vector<unsigned> > mochi = Mochila(candidatos, pesomochi);
+
+
+    vector<unsigned> sol = Solucion(mochi, candidatos);
+    despues = clock();
 
     cout << "   ";
     for (unsigned i=0; i<=pesomochi; i++)
@@ -98,15 +109,18 @@ int main(int argc, char const *argv[]) {
             cout << mochi.at(i).at(j) << '\t';
         cout << endl;
     }
-
-    vector<unsigned> sol = Solucion(mochi, candidatos);
+    
+    vector<Elemento>::iterator rit = candidatos.begin();
     cout << "Los objetos utilizados son: " << endl;
     for (unsigned i=0; i<sol.size(); i++) {
         if (sol[i]==1)
-            cout << "Usamos el objeto " << i+1 << endl;
+            cout << "Usamos el objeto " << *rit << endl;
         else
-            cout << "NO usamos el objeto " << i+1 << endl;
+            cout << "NO usamos el objeto " << *rit << endl;
+        ++rit;
     }
+
+    cout << "Tiempo: " << (despues-antes)/(double)CLOCKS_PER_SEC << endl;
 
     return 0;
 }
